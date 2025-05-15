@@ -39,7 +39,7 @@ def notificar():
         return jsonify({"error": "No se recibió JSON válido"}), 400
 
     estado = data.get("estado", "sin estado")
-    mensaje = f"Tu pareja ha enviado el estado: {estado}"
+    mensaje = f"Andreita ha enviado el estado: {estado}"
 
     if not PUSHOVER_USER_KEY or not PUSHOVER_API_TOKEN:
         return jsonify({"error": "Variables de entorno Pushover no configuradas"}), 500
