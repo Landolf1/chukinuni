@@ -9,8 +9,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-PUSHOVER_USER_KEY = os.getenv("uzxkgujbuf8ruzcvr53tdmbcdk4v6w")
-PUSHOVER_API_TOKEN = os.getenv("aoagbh49v9fb6t75u3igj71wzv43re")
+PUSHOVER_USER_KEY = os.getenv("PUSHOVER_USER_KEY")
+PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
 
 def notificar_pushover(mensaje):
     data = {
