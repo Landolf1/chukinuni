@@ -1,17 +1,28 @@
 from flask import Flask, render_template, request, jsonify
-import smtplib
 import os
 from dotenv import load_dotenv
 import logging
+import requests
 
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-DESTINATARIO = os.getenv("DESTINATARIO")
+PUSHOVER_USER_KEY = os.getenv("uzxkgujbuf8ruzcvr53tdmbcdk4v6w")
+PUSHOVER_API_TOKEN = os.getenv("aoagbh49v9fb6t75u3igj71wzv43re")
+
+def notificar_pushover(mensaje):
+    data = {
+        "token": PUSHOVER_API_TOKEN,
+        "user": PUSHOVER_USER_KEY,
+        "message": mensaje,
+        "title": "Estado emocional"
+    }
+
+    response = requests.post("https://api.pushover.net/1/messages.json", data=data)
+    app.logger.debug(f"Pushover response: {response.status_code} - {response.text}")
+    return response.status_code == 200
 
 @app.route("/")
 def index():
@@ -26,21 +37,18 @@ def notificar():
         return jsonify({"error": "No se recibió JSON válido"}), 400
 
     estado = data.get("estado", "sin estado")
-
-    asunto = "Estado emocional recibido"
     mensaje = f"Tu pareja ha enviado el estado: {estado}"
-    email_text = f"Subject: {asunto}\n\n{mensaje}"
 
-    if not EMAIL_ADDRESS or not EMAIL_PASSWORD or not DESTINATARIO:
-        return jsonify({"error": "Variables de entorno no configuradas"}), 500
+    if not PUSHOVER_USER_KEY or not PUSHOVER_API_TOKEN:
+        return jsonify({"error": "Variables de entorno Pushover no configuradas"}), 500
 
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.sendmail(EMAIL_ADDRESS, DESTINATARIO, email_text)
-        return jsonify({"mensaje": "Correo enviado"}), 200
+        if notificar_pushover(mensaje):
+            return jsonify({"mensaje": "Notificación enviada"}), 200
+        else:
+            return jsonify({"error": "Error al enviar notificación"}), 500
     except Exception as e:
-        app.logger.error(f"Error al enviar correo: {e}")
+        app.logger.error(f"Error al enviar con Pushover: {e}")
         return jsonify({"error": f"Error al enviar: {e}"}), 500
 
 if __name__ == '__main__':
