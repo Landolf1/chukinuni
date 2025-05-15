@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chukinuni status</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: background-color 0.5s ease;
+      overflow: hidden;
+      background-image: url('/static/nosotros.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    .background-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    h1, .options, .message, .extra-button, #missingMessage {
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .options {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      font-size: 2rem;
+      padding: 15px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #fff;
+      text-align: center;
+      padding: 0 20px;
+      font-style: italic;
+    }
+
+    .floating {
+      position: absolute;
+      font-size: 1.5rem;
+      animation: float 6s infinite ease-in;
+      opacity: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(1); opacity: 0; }
+      30% { opacity: 0.6; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    .extra-button {
+      margin-top: 30px;
+      font-size: 1rem;
+      background-color: #fff0f5;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      font-weight: bold;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .extra-button:hover {
+      background-color: #ffe4ec;
+    }
+
+    #missingMessage {
+      margin-top: 15px;
+      font-size: 1rem;
+      font-style: italic;
+      color: #fff8f0;
+      text-align: center;
+    }
+
+    .carousel {
+      width: 100%;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      padding: 10px 0;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 5px 5px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: max-content;
+      animation: scroll 30s linear infinite;
+    }
+
+    .carousel-track img {
+      height: 100px;
+      margin-right: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-track img:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-overlay"></div>
+
+  <h1>¿Cómo tás hoy, chukinuni?</h1>
+  <div class="options">
+    <button onclick="sendMood(':)', '#ffb6c1')">😊</button>
+    <button onclick="sendMood(':|', '#add8e6')">😐</button>
+    <button onclick="sendMood(':(', '#d8bfd8')">😢</button>
+  </div>
+  <div class="message" id="dailyMessage"></div>
+  <button class="extra-button" onclick="sendMissingYou()">Por si me extrañas 💌</button>
+  <div id="missingMessage"></div>
+
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="/static/1.jpg" alt="Foto 1" />
+      <img src="/static/2.jpg" alt="Foto 2" />
+      <img src="/static/3.jpg" alt="Foto 3" />
+      <img src="/static/4.jpg" alt="Foto 4" />
+      <img src="/static/5.jpg" alt="Foto 5" />
+      <img src="/static/6.jpg" alt="Foto 6" />
+      <img src="/static/7.jpg" alt="Foto 7" />
+      <img src="/static/8.jpg" alt="Foto 8" />
+      <img src="/static/9.jpg" alt="Foto 9" />
+      <img src="/static/1.jpg" alt="Foto 1" />
+      <img src="/static/2.jpg" alt="Foto 2" />
+      <img src="/static/3.jpg" alt="Foto 3" />
+      <img src="/static/4.jpg" alt="Foto 4" />
+      <img src="/static/5.jpg" alt="Foto 5" />
+      <img src="/static/6.jpg" alt="Foto 6" />
+      <img src="/static/7.jpg" alt="Foto 7" />
+      <img src="/static/8.jpg" alt="Foto 8" />
+      <img src="/static/9.jpg" alt="Foto 9" />
+    </div>
+  </div>
+
+  <script>
+    const dailyMessages = {
+      ':)': [
+        "Muy bien, te haré llegar un cupón pa ir al bravo hoy. 🔖",
+        "Mangos (de comer 🥭) pa ti.",
+        "Si pero báñate pli"
+      ],
+      ':|': [
+        "Normal, dique.",
+        "Con esa cara no parece normal...",
+        "Ta bien, te voy a creer"
+      ],
+      ':(': [
+        "Todo pasa Andreita :) <3",
+        "Muchos abrazos pa ti 🫂 sigo aquí",
+        "Te quiero mucho de lejos :) pero te quiero más si te pones feliz 🌷"
+      ]
+    };
+
+    function sendMood(mood, color) {
+      document.body.style.backgroundColor = color;
+
+      const messages = dailyMessages[mood];
+      const message = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('dailyMessage').textContent = message;
+
+      fetch('/notificar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: mood })
+      }).catch(console.error);
+
+      showFloatingEmojis(mood);
+    }
+
+    function sendMissingYou() {
+      fetch('/notificar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: 'extraño' })
+      }).catch(console.error);
+
+      document.getElementById('missingMessage').textContent = 'Yo también te extraño chukinuni pero aunque estemos lejos te sigo cuidando y queriendo, eres mi favorita💗';
+    }
+
+    function showFloatingEmojis(mood) {
+      let emoji;
+      if (mood === ':)') emoji = '❤️';
+      else if (mood === ':|') emoji = '🫂';
+      else emoji = '🌹';
+
+      for (let i = 0; i < 20; i++) {
+        const elem = document.createElement('div');
+        elem.classList.add('floating');
+        elem.textContent = emoji;
+        elem.style.left = Math.random() * 100 + 'vw';
+        elem.style.animationDuration = (4 + Math.random() * 3) + 's';
+        document.body.appendChild(elem);
+        setTimeout(() => elem.remove(), 8000);
+      }
+    }
+  </script>
+</body>
+</html>
